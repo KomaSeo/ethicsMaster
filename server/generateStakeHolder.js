@@ -14,15 +14,15 @@ async function generateStakeHolder(
 ) {
   let systemMessage = `You are a product manager who involved in discussion about ethical concern. `;
   systemMessage += `For a given product, You should suggest stakeholders group who are related to product.`;
-  systemMessage += `You should suggest one stakeholder group.`;
+  systemMessage += `You should suggest only one stakeholder group. `;
   systemMessage += `You should generate one representative person and his(or her) information.`;
   systemMessage += `In personal information, you should contain ${criteria}.`;
-  systemMessage += `After generate stakeHolder, distinguish whether generated stakeholder is direct, indirect, or excluded with product.`
-  systemMessage += `Definition of direct, indirect, excluded stakeholders are as followed. ${distanceToTech[0]}, ${distanceToTech[1]}, ${distanceToTech[2]}.`;
   if(previousPersonaList !=null){
     systemMessage += "After product information, other stakeholder list will be given.";
-    systemMessage += "You must suggest stakeholder who has a very different background from people on the list."
+    systemMessage += "You must suggest a stakeholder who has a very different background from people on the list."
   }
+  systemMessage += `You should suggest direct type of stakeholder.`
+  systemMessage += `Definition of direct, indirect, excluded stakeholders are as follows. ${distanceToTech[0]}, ${distanceToTech[1]}, ${distanceToTech[2]}.`;
 
   const message = []
   message.push({ role: "system", content: systemMessage })
