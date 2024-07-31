@@ -9,7 +9,7 @@ const initEvaluationCards = [
   "'Accountability : Take responsibility for how systems operate and their impact on society.'",
   "'User Control : Stakeholders, particularly end users, should be able to understand and expect how the system works.'",
 ];
-function CriteriaDrowdownMenu() {
+function CriteriaDrowdownMenu({ onChange }) {
   const optionList = [];
   for (let index in initEvaluationCards) {
     optionList.push(
@@ -20,8 +20,18 @@ function CriteriaDrowdownMenu() {
   }
   return (
     <div>
-      <label htmlFor="evaluationCriteria">Choose a car:</label>
-      <select id="evaluationCriteria" name="evaluationCriteria">
+      <label htmlFor="evaluationCriteria">Choose a criteria:</label>
+      <select
+        onChange={(e) => {
+          onChange(e.target.value);
+        }}
+        id="evaluationCriteria"
+        name="evaluationCriteria"
+        defaultValue=""
+      >
+        <option value="" disabled hidden>
+          Choose here
+        </option>
         {optionList}
       </select>
     </div>

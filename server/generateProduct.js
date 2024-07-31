@@ -24,8 +24,8 @@ async function generateProduct(organization, coreTech, time = null, place = null
     systemMessage += `.`
     systemMessage += `You should provide product which use ${coreTech} technology.`
     systemMessage += "You should provide product idea realted to user's request."
-    systemMessage += "You should emphasize title of your idea by triple quotes like '''example product title'''."
-    systemMessage += 'You should emphasize content of your idea by triple double quotes like """example product explanation"""'
+    systemMessage += "You should emphasize title of your idea by square bracket like [example product title]."
+    systemMessage += 'You should emphasize content of your idea by curly bracket like {example product explanation}'
     systemMessage += "You should provide three or more product idea."
 
 
@@ -42,8 +42,8 @@ async function generateProduct(organization, coreTech, time = null, place = null
         n: 1
     });
     const replyString = completion.choices[0].message.content;
-    const titleList = extractStringFromDelimiter(replyString,"'''","'''");
-    const explanationList = extractStringFromDelimiter(replyString,'"""','"""');
+    const titleList = extractStringFromDelimiter(replyString,"[","]");
+    const explanationList = extractStringFromDelimiter(replyString,'{','}');
     const productList = []
     for(let i = 0; i < titleList.length; i++){
         const newProduct = {};
