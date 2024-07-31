@@ -1,7 +1,7 @@
 import generatePersonalProperty from "./generatePersonalProperty.js";
 import generateProduct from "./generateProduct.js";
 import evaluationCards from "./cards.js";
-import generateStakeHolder from "./generateStakeHolder.js";
+import generateStakeHolder from "./generatePersona.js";
 import generateReview from "./generateReview.js";
 import generateDiscussionForReview from "./generateDiscussion.js";
 let productString;

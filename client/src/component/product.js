@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-function ProductManager({onProductChange}) {
+function ProductManager({onSelectChange}) {
   const [initProductList, setInitProductList] = useState([]);
   return (
     <div>
@@ -10,11 +10,10 @@ function ProductManager({onProductChange}) {
           setInitProductList(data);
         }}
       ></ProductQuery>
-      <ProductDisplay initProductList={initProductList} onSelectChange={onProductChange}></ProductDisplay>
+      <ProductDisplay initProductList={initProductList} onSelectChange={onSelectChange}></ProductDisplay>
     </div>
   );
 }
-
 function ProductQuery({ onGenerate }) {
   const [org, setOrg] = useState("AI tech company");
   const [tech, setTech] = useState("Facial Recognition");
@@ -104,24 +103,23 @@ function ProductDisplay({ initProductList, onSelectChange }) {
   const [selectedIndex , setSelectedIndex] = useState(-1);
   const [productList, setProductList] = useState(initProductList);
   useEffect(()=>{
+    if(typeof(onSelectChange)==="function"){
+      onSelectChange(productList[selectedIndex])
+    }
+  },[selectedIndex,productList,onSelectChange])
+  useEffect(()=>{
     setProductList(initProductList);
+    setSelectedIndex(-1);
   },[initProductList])
 
 
   function handleSelection(index){
     setSelectedIndex(index);
-    if(typeof(onSelectChange) === "function"){
-      onSelectChange(productList[index])
-    }
   }
   function handleProductChange(index, changeInfo){
     const newProductList = [...productList];
     newProductList[index] = changeInfo;
     setProductList(newProductList);
-    const isSelectedIndex = index === selectedIndex;
-    if(isSelectedIndex){
-      onSelectChange(newProductList[index])
-    }
   }
   const row = [];
   for (let index in productList) {
