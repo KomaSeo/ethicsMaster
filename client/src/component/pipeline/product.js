@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-
+import { RequestButton } from "../serverRequestButton.js";
+import {SelectOnList} from "../selectOnList.js"
 function ProductManager({onSelectChange}) {
   const [initProductList, setInitProductList] = useState([]);
   return (
@@ -20,28 +21,16 @@ function ProductQuery({ onGenerate }) {
   const [time, setTime] = useState("");
   const [place, setPlace] = useState("");
   const [occasion, setOccasion] = useState("");
-  const [buttonText, setButtonText] = useState("generate scenario");
-  const [isButtonEnabled, setIsButtonEnabled] = useState(true);
-  function queryScenario() {
-    setIsButtonEnabled(false);
-    setButtonText("generating...");
-    axios
-      .get("/scenario", {
-        params: {
-          organization: org,
-          coreTech: tech,
-          time: time,
-          place: place,
-          occasion: occasion,
-        },
-      })
-      .then((retVal) => {
-        handleScenario(retVal);
-      });
+  const requestConfig = {
+    params: {
+      organization: org,
+      coreTech: tech,
+      time: time,
+      place: place,
+      occasion: occasion,
+    },
   }
   function handleScenario(returnScenarioValue) {
-    setIsButtonEnabled(true);
-    setButtonText("generate Scenario");
     if (typeof onGenerate === "function") {
       onGenerate(returnScenarioValue.data);
     }
@@ -88,9 +77,7 @@ function ProductQuery({ onGenerate }) {
         }}
       ></textarea>
       <br />
-      <button disabled={!isButtonEnabled} onClick={queryScenario}>
-        {buttonText}
-      </button>
+      <RequestButton requestText="Generate Product" proceedText="Generating..." url="/product" onRequest={handleScenario} config={requestConfig}></RequestButton>
     </div>
   );
 }
@@ -100,22 +87,18 @@ function ProductDisplay({ initProductList, onSelectChange }) {
   -second update in ProductDisplay.handleProductChange function.
   Functionally, there is no problem. However, needed to be fixed when render time gets too large.
   */
-  const [selectedIndex , setSelectedIndex] = useState(-1);
+  const [index , setIndex] = useState(-1);
   const [productList, setProductList] = useState(initProductList);
   useEffect(()=>{
     if(typeof(onSelectChange)==="function"){
-      onSelectChange(productList[selectedIndex])
+      onSelectChange(productList[index])
     }
-  },[selectedIndex,productList,onSelectChange])
+  },[index,productList,onSelectChange])
   useEffect(()=>{
     setProductList(initProductList);
-    setSelectedIndex(-1);
   },[initProductList])
 
 
-  function handleSelection(index){
-    setSelectedIndex(index);
-  }
   function handleProductChange(index, changeInfo){
     const newProductList = [...productList];
     newProductList[index] = changeInfo;
@@ -123,7 +106,6 @@ function ProductDisplay({ initProductList, onSelectChange }) {
   }
   const row = [];
   for (let index in productList) {
-    const isSelected = index === selectedIndex
     const newPanel = (
       <div key={index}>
         <ProductPanel
@@ -132,14 +114,11 @@ function ProductDisplay({ initProductList, onSelectChange }) {
             handleProductChange(index,changeObject);
           }}
         ></ProductPanel>
-        <button disabled={isSelected} onClick={()=>{
-          handleSelection(index)
-        }}>{isSelected? "Selected" : "Select"}</button>
       </div>
     );
     row.push(newPanel);
   }
-  return <div>{row}</div>;
+  return <SelectOnList list={row} onSelect={setIndex}></SelectOnList>;
 }
 function ProductPanel({ productInfo, onChange }) {
   const [product, setProduct] = useState(productInfo)

@@ -1,7 +1,7 @@
 import generatePersonalProperty from "./generatePersonalProperty.js";
 import generateProduct from "./generateProduct.js";
 import evaluationCards from "./cards.js";
-import generateStakeHolder from "./generatePersona.js";
+import generatePersona from "./generatePersona.js";
 import generateReview from "./generateReview.js";
 import generateDiscussionForReview from "./generateDiscussion.js";
 let productString;
@@ -23,7 +23,7 @@ generateProduct().then((result)=>{
 }).then(async(prpoerties)=>{
     propertylist = prpoerties
     for(let index=0; index < personaNumber;index++){
-        const newStakeHolder = await generateStakeHolder(productString,propertylist,stakeHolderReviewers);
+        const newStakeHolder = await generatePersona(productString,propertylist,stakeHolderReviewers);
         stakeHolderReviewers.push(newStakeHolder);
     }
     return

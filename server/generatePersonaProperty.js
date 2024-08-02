@@ -8,7 +8,8 @@ systemMessage += "Suggest what kinds of personal information should be recorded.
 systemMessage += 'You should reply with name of personal information inside square brackets, and reason why you choose in curly bracket.';
 systemMessage += `example) [example_property] {example reason why this propert should be included.}`
 systemMessage += `You should suggest 10 or more kinds of information.`
-systemMessage += "Do not include email address, phone number and participant ID."
+systemMessage += "Do not include email address, phone number, and participant ID."
+systemMessage += "Must contain 'name' property."
 
 async function generatePersonaProperty(criteria,productInfo) {
     const completion = await openai.chat.completions.create({
