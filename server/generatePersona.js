@@ -24,7 +24,7 @@ async function generatePersona(
   systemMessage += `You should suggest ${distanceType} type of stakeholder.`
   systemMessage += `You should reply by containing name of personal information by square bracket, and containing personal information content by curly bracket.`
   systemMessage += `For example, for prduct which can be used in airport you can suggest like : "[Name] {Bruce Wayne} [Age] {41} ... [stakeholder_group] {passenger#direct stakeholder}\n"`
-  systemMessage += `When You write stakeholder_group, don't use ambiguous word like "end user". Describe clear role.`
+  systemMessage += `When You write stakeholder_group, don't use ambiguous word like "end user".`
   if(previousPersonaList !=null){
     systemMessage += "After product information, other stakeholder list will be given.";
     systemMessage += "You must suggest a stakeholder who has a very different background from people on the list."
@@ -34,7 +34,7 @@ async function generatePersona(
 
   message.push({ role: "system", content: systemMessage })
   message.push({    role: "user",
-    content:`Product title :  ${product.title}\nProduct explanation : ${product.explanation}\n`,
+    content:`${product}\n`,
   })
   if(previousPersonaList != null){
     for(let persona in previousPersonaList){
@@ -46,6 +46,7 @@ async function generatePersona(
     messages: message,
     model: "gpt-4o-mini",
   });
+  console.log(product)
   const queryString = completion.choices[0].message.content;
   const generatedPropertyList = extractStringFromDelimiter(queryString,'[',']');
   const generatedContentList = extractStringFromDelimiter(queryString,"{","}");

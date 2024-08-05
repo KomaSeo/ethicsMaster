@@ -35,10 +35,12 @@ function PersonaManager({product, propertyList: generatePropertyList, onChangeSe
     const panelList = []
     for(let i in personaList){
         const newPanel = <div  key={i}><PersonaPanel initPersona={personaList[i]} onChange={changeInfo => handlePersonaChange(i,changeInfo)}></PersonaPanel>
-        <br></br>
         </div>
         panelList.push(newPanel)
     }
+    <div >
+        {panelList}
+    </div>
     return(<div>
         <DropDownWithArray onChange={setDistanceType} inputArray={distanceOption} label={"type of stakeholder."}></DropDownWithArray>
         <RequestButton requestText="generate persona" proceedText="generating..." url={"/persona"} config={personaParam} onRequest={(retVal)=>{addPersona(retVal.data)}}></RequestButton>
@@ -58,13 +60,13 @@ function PersonaPanel({initPersona, onChange}){
     }
     const propertyRow = [];
     for(let i in propertyList){
-        const propertyPanel = <div key={i}>
-        <textarea value={propertyList[i].propertyName} onChange={(e)=>{
+        const propertyPanel = <div class="grid grid-cols-4" key={i}>
+        <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value={propertyList[i].propertyName} onChange={(e)=>{
             handlePropertyChange(i,{propertyName : e.target.value})
-        }}></textarea>
-        <textarea value={propertyList[i].propertyContent} onChange={(e)=>{
+        }}></input>
+        <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 col-span-3" value={propertyList[i].propertyContent} onChange={(e)=>{
             handlePropertyChange(i,{propertyContent : e.target.value})
-        }}></textarea>
+        }}></input>
         </div>
         propertyRow.push(propertyPanel);
     }

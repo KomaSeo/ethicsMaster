@@ -4,10 +4,12 @@ import bodyParser from "body-parser";
 
 import React from "react";
 import { createRoot } from "react-dom/client";
+import { convertPersonaToString, convertProductToStirng } from "./util.js";
 import ReactDom from "react-dom";
 import generateProduct from "./generateProduct.js";
 import generatePersonaProperty from "./generatePersonaProperty.js";
 import generatePersona from "./generatePersona.js";
+import generateReview from "./generateReview.js";
 
 const app = express();
 const port = process.env.port || 3001;
@@ -35,13 +37,7 @@ app.get("/personaProperty", (req, res) => {
   let propertyQuery;
   try {
     const { criteria, product } = req.query;
-    const productInfo =
-      "Product title : " +
-      product.title +
-      ".\n" +
-      "Product explanation : " +
-      product.explanation +
-      ".";
+    const productInfo = convertProductToStirng(product)
 
     propertyQuery = generatePersonaProperty(
       criteria,
@@ -65,7 +61,13 @@ app.get("/persona", (req, res)=>{
         if(!product || !propertyList || !distanceType){
           throw new Error("Not enough parameter for query.")
         }
-        personaQuery = generatePersona(product,propertyList,distanceType,previousPersonaList);
+        const productString = convertProductToStirng(product)
+        const personaStringList = []
+        for(let personaIndex in previousPersonaList){
+          const personaString = convertPersonaToString(previousPersonaList[personaIndex])
+          personaStringList.push(personaString)
+        }
+        personaQuery = generatePersona(productString,propertyList,distanceType,personaStringList);
         personaQuery.then((generatedPersona)=>{
           res.status(200).send(generatedPersona)
         }).catch((e)=>{
@@ -77,7 +79,28 @@ app.get("/persona", (req, res)=>{
       res.status(400).send("Bad request.");
     }
 })
-
+app.get("/review",(req,res)=>{
+  let reviewQuery;
+  try{
+    const {persona, product, stance, evaluationStandard} = req.query
+    if(!persona || !product || !stance || !evaluationStandard){
+      throw new Error("Not enough parmeter for query")
+    }
+    const personaString = convertPersonaToString(persona);
+    const productString = convertProductToStirng(product)
+    reviewQuery = generateReview(personaString,productString,stance,evaluationStandard);
+    reviewQuery.then((generatedReview)=>{
+      res.status(200).send(generatedReview)
+    }).catch((e)=>{
+      res.status(500).send("Backend server failed. Try again")
+      console.log(e);
+    })
+  }
+  catch(e){
+    res.status(500).send("Backend server failed. Try again")
+    console.log(e);
+  }
+})
 
 app.listen(port, () => {
   console.log(`server is listening to port ${port}.`);
