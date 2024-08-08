@@ -1,25 +1,32 @@
 import "./App.css";
 import { ServerStatus } from "./component/pipeline/serverStatus.js";
-import { ProductManager } from "./component/pipeline/product.js";
+import { ProductManager, ProductPanel } from "./component/pipeline/product.js";
 import { CriteriaDrowdownMenu } from "./component/pipeline/criteria.js";
 import { PropertyQuery } from "./component/pipeline/personaProperty.js";
 import { useEffect, useState } from "react";
 import { PersonaManager } from "./component/pipeline/persona.js";
 import { StanceDropDownMenu } from "./component/pipeline/stance.js";
 import { ReveiwPanel } from "./component/pipeline/review.js";
+import { PageDisplay } from "./component/pageDisplay.js";
 import TestPanel from "./component/test.js";
-import NavSideBar from "./component/navigationSidebar.js";
+import SiderBar from "./component/navigationSidebar.js";
 function App() {
   const [selectedProduct, setProduct] = useState(undefined);
   const [criteria, setCriteria] = useState(undefined);
   const [propertyList, setPropertyList] = useState(undefined);
   const [stance, setStance] = useState(undefined);
   const [selectedPersona, setPersona] = useState(undefined);
-  console.log(propertyList);
-
+  const sideContentList = []
+  if(selectedProduct){
+    sideContentList.push(<ProductPanel productInfo={selectedProduct} disabled={true}></ProductPanel>)
+  }
+  if(propertyList && criteria){
+    
+  }
+  const sideContent = <PageDisplay contentArray={sideContentList}></PageDisplay>
   return (
     <div>
-      <NavSideBar></NavSideBar>
+      <SiderBar content={sideContent}></SiderBar>
       <div className="lg:pl-[19.5rem] mx-5 max-w-screen-xl xl:mx-auto">
         <TestPanel></TestPanel>
         <ServerStatus></ServerStatus>
