@@ -5,19 +5,37 @@ import { RequestButton } from "../serverRequestButton.js";
 
 function PropertyQuery({ product, criteria, onChange }) {
   const [propertyList, setPropertyList] = useState([]);
-  useEffect(() => {
-    if (typeof onChange === "function") {
-      onChange(propertyList);
-    }
-  }, [propertyList, onChange]);
-  const row = [];
-  const disabled = true;
+  const disabled = false;
   const queryConfig = {
     params: {
       product: product,
       criteria: criteria,
     },
   };
+  function handleChange(changedList){
+    if (typeof onChange === "function") {
+      onChange(changedList);
+    }
+    setPropertyList(changedList)
+  }
+
+  return (
+    <div>
+      <PropertyListPanel propertyList={propertyList} setPropertyList={setPropertyList} disabled={disabled}></PropertyListPanel>
+      <RequestButton
+        onRequest={(retval) => {
+          setPropertyList(retval.data);
+        }}
+        url={"/personaProperty"}
+        config={queryConfig}
+        requestText="generate Property"
+        proceedText="generating..."
+      ></RequestButton>
+    </div>
+  );
+}
+function PropertyListPanel({propertyList, setPropertyList, onChange, disabled }) {
+  const row = [];
   for (let index in propertyList) {
     const content = (
       <input
@@ -40,14 +58,14 @@ function PropertyQuery({ product, criteria, onChange }) {
       </button>
     );
     const propertyText = (
-      <div className="grid grid-cols-5" key={index}>
+      <div className={disabled ? "" : "grid grid-cols-5"} key={index}>
         {content}
-        {disabled? undefined : buttonForDelete}
+        {disabled ? undefined : buttonForDelete}
       </div>
     );
     row.push(propertyText);
   }
-  const buttonForAddProperty = disabled? undefined : (
+  const buttonForAddProperty = disabled ? undefined : (
     <button
       class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
       onClick={addEmptyProperty}
@@ -56,21 +74,11 @@ function PropertyQuery({ product, criteria, onChange }) {
     </button>
   );
   row.push(buttonForAddProperty);
-  return (
-    <div>
-      {row}
-      <RequestButton
-        onRequest={(retval) => {
-          setPropertyList(retval.data);
-        }}
-        url={"/personaProperty"}
-        config={queryConfig}
-        requestText="generate Property"
-        proceedText="generating..."
-      ></RequestButton>
-    </div>
-  );
-
+  useEffect(() => {
+    if (typeof onChange === "function") {
+      onChange(propertyList);
+    }
+  }, [propertyList, onChange]);
   function addEmptyProperty() {
     const newList = [...propertyList];
     newList.push("");
@@ -92,5 +100,4 @@ function PropertyQuery({ product, criteria, onChange }) {
     setPropertyList(deletedList);
   }
 }
-function propertyListPanel({ propertyList, onChange, disabled }) {}
-export { PropertyQuery };
+export { PropertyQuery,PropertyListPanel };
