@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { RequestButton } from "../serverRequestButton.js";
 import {SelectOnList} from "../selectOnList.js"
 function ProductManager({onSelectChange}) {
@@ -16,8 +15,8 @@ function ProductManager({onSelectChange}) {
   );
 }
 function ProductQuery({ onGenerate }) {
-  const [org, setOrg] = useState("AI tech company");
-  const [tech, setTech] = useState("Facial Recognition");
+  const [org, setOrg] = useState("");
+  const [tech, setTech] = useState("");
   const [time, setTime] = useState("");
   const [place, setPlace] = useState("");
   const [occasion, setOccasion] = useState("");
@@ -36,48 +35,53 @@ function ProductQuery({ onGenerate }) {
     }
   }
   return (
-    <div class="mb-5">
-      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Organization</label>
+    <div className="mb-5">
+      <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Organization</label>
       <input
       type="text"
+      placeholder="ex) Ai tech company"
         value={org}
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         onChange={(e) => {
           setOrg(e.target.value);
         }}
       ></input>
-      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">CoreTech</label>
+      <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">CoreTech</label>
       <input
       type="text"
+      placeholder="ex) Facial Recognition"
         value={tech}
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         onChange={(e) => {
           setTech(e.target.value);
         }}
       ></input>
-      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Time</label>
+      <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Time</label>
       <input
       type="text"
+      placeholder="ex) night time"
         value={time}
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         onChange={(e) => {
           setTime(e.target.value);
         }}
       ></input>
-      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Place</label>
+      <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Place</label>
       <input
       type="text"
+      placeholder="ex) airport"
         value={place}
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         onChange={(e) => {
           setPlace(e.target.value);
         }}
       ></input>
-      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Occasion</label>
+      <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Occasion</label>
       <input
       type="text"
         value={occasion}
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        placeholder="ex) waiting for plane"
+        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         onChange={(e) => {
           setOccasion(e.target.value);
         }}
@@ -144,24 +148,24 @@ function ProductPanel({ productInfo, onChange, disabled }) {
   }
   return (
     <div>
-      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">product title</label>
+      <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">product title</label>
       <input
         type="text"
         disabled={disabled}
         value={product.title}
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         onChange={(event) => {
           const changedObject = {title : event.target.value}
           handleProductChange(changedObject)
         }}
       ></input>
       <br></br>
-      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">product explanation</label>
+      <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">product explanation</label>
       <textarea
         rows={5}
         disabled={disabled}
         value={product.explanation}
-        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         onChange={(event) => {
           const changedObject = {explanation : event.target.value}
           handleProductChange(changedObject)

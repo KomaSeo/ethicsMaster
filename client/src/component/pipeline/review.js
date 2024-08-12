@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { RequestButton } from "../serverRequestButton.js";
-import axios from "axios";
 
 function ReveiwPanel({persona, product, stance, evaluationStandard}){
     const [review, SetReview] = useState("");

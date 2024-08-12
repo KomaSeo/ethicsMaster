@@ -1,52 +1,17 @@
-import generatePersonalProperty from "./generatePersonalProperty.js";
-import generateProduct from "./generateProduct.js";
-import evaluationCards from "./cards.js";
-import generatePersona from "./generatePersona.js";
-import generateReview from "./generateReview.js";
-import generateDiscussionForReview from "./generateDiscussion.js";
-let productString;
-let propertylist;
-let stakeHolderReviewers = []
-let writtenReviews = []
-const evaluationStandard = evaluationCards.Privacy_and_security
-const personaNumber = 5;
+import openai from "./OpenAIInstance.js";
 
+let systemMessage = "You are product manager."
+systemMessage += "You should make question lists for product details."
+systemMessage += "Number of questions must be around 10."
 
-generateProduct().then((result)=>{
-    const productTitle = Object.keys(result)[0]
-    const productExplanation  = result[productTitle]
-    const productString = "Product Title : " +  productTitle + "\nProduct Description : " + productExplanation;
-    return productString
-}).then((product)=>{
-    productString = product;
-    return generatePersonalProperty(evaluationStandard,productString);
-}).then(async(prpoerties)=>{
-    propertylist = prpoerties
-    for(let index=0; index < personaNumber;index++){
-        const newStakeHolder = await generatePersona(productString,propertylist,stakeHolderReviewers);
-        stakeHolderReviewers.push(newStakeHolder);
-    }
-    return
-}).then(()=>{
-    const reviewPromiseList = [];
-    let allPromise
-    for(let index in stakeHolderReviewers){
-        const newPromise = generateReview(stakeHolderReviewers[index],productString,"negative",evaluationStandard)
-        newPromise.then((review) =>{
-            writtenReviews.push(review);
-        })
-        reviewPromiseList.push(newPromise);
-    }
-    allPromise = Promise.all(reviewPromiseList);
-    return allPromise
-}).then(()=>{
-    console.log(productString);
-    console.log("--------------------")
-    console.log(propertylist);
-    console.log(stakeHolderReviewers);
-    console.log(writtenReviews);
-}).then(()=>{
-    generateDiscussionForReview(productString,writtenReviews[4],stakeHolderReviewers,15).then((resultDiscussion)=>{
-        console.log(resultDiscussion);
-    })
-})
+let userMessage = "Product title : Smart Event Access Control\n"
+userMessage += "Imagine a system used at large events or conferences to streamline entry. This product would utilize facial recognition to quickly identify attendees upon arrival, allowing them to bypass long lines. It could integrate with ticketing systems to ensure that only authorized individuals gain access, enhancing security and efficiency during high-traffic times."
+const message = []
+message.push({ role: "system", content: systemMessage })
+message.push({ role: "user", content : userMessage});
+const completion = await openai.chat.completions.create({
+    messages: message,
+    model: "gpt-4o-mini",
+  });
+
+console.log(completion.choices[0].message)

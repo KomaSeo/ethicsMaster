@@ -17,6 +17,7 @@ app.use(morgan("tiny"));
 app.use(express.static("./static"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
 app.get("/serverStatus", (req, res) => {
   res.status(200).send("Server Online.");
 });

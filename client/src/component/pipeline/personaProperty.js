@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import ReactDOM from "react-dom";
-import axios from "axios";
 import { RequestButton } from "../serverRequestButton.js";
 
 function PropertyQuery({ product, criteria, onChange }) {
@@ -21,10 +19,10 @@ function PropertyQuery({ product, criteria, onChange }) {
 
   return (
     <div>
-      <PropertyListPanel propertyList={propertyList} setPropertyList={setPropertyList} disabled={disabled}></PropertyListPanel>
+      <PropertyListPanel propertyList={propertyList} setPropertyList={handleChange} disabled={disabled}></PropertyListPanel>
       <RequestButton
         onRequest={(retval) => {
-          setPropertyList(retval.data);
+          handleChange(retval.data);
         }}
         url={"/personaProperty"}
         config={queryConfig}
@@ -40,7 +38,7 @@ function PropertyListPanel({propertyList, setPropertyList, onChange, disabled })
     const content = (
       <input
         type="text"
-        class="col-span-4 block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="col-span-4 block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         onChange={(e) => {
           handlePropertyChange(index, e.target.value);
         }}
@@ -52,7 +50,7 @@ function PropertyListPanel({propertyList, setPropertyList, onChange, disabled })
         onClick={() => {
           deleteProperty(index);
         }}
-        class="col-span-1 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-2.5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+        className="col-span-1 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-2.5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
       >
         Delete
       </button>
@@ -66,8 +64,8 @@ function PropertyListPanel({propertyList, setPropertyList, onChange, disabled })
     row.push(propertyText);
   }
   const buttonForAddProperty = disabled ? undefined : (
-    <button
-      class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+    <button key={propertyList.length ?? 0}
+    className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
       onClick={addEmptyProperty}
     >
       Add property
@@ -91,7 +89,7 @@ function PropertyListPanel({propertyList, setPropertyList, onChange, disabled })
   }
   function deleteProperty(index) {
     const deletedList = propertyList.filter((val, valIndex) => {
-      if (valIndex == index) {
+      if (valIndex === index) {
         return false;
       } else {
         return true;
@@ -99,5 +97,6 @@ function PropertyListPanel({propertyList, setPropertyList, onChange, disabled })
     });
     setPropertyList(deletedList);
   }
+  return row
 }
 export { PropertyQuery,PropertyListPanel };

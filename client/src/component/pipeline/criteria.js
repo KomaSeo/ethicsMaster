@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import { DropDownWithArray } from "../dropdown.js";
 const initEvaluationCards = [
   "'Faireness : Treat all stakeholders equitably and prevent undesirable stereotypes and biased.'",
