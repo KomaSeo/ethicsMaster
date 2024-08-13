@@ -2,7 +2,7 @@ import React from "react";
 
 function SiderBar({content}) {
   return (
-    <div className="hidden lg:block fixed z-20 inset-0 top-[3.8125rem] left-[max(0px,calc(50%-45rem))] right-auto w-[19rem] pb-10 pl-8 pr-6 overflow-y-auto">
+    <div className="hidden lg:block fixed z-20 inset-0 top-[3.8125rem] right-[max(0px,calc(50%-45rem))] left-auto w-[19rem] pb-10 pr-8 pl-6 overflow-y-auto">
       {content}
     </div>
   );

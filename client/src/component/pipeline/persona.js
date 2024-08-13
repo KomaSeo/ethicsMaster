@@ -16,7 +16,7 @@ function PersonaManager({
     if (typeof onChangeSelect == "function") {
       onChangeSelect(personaList[index]);
     }
-  }, [index, personaList, onChangeSelect]);
+  }, [index, personaList]);
   const personaParam = {
     params: {
       product: product,

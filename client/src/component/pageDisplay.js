@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-function PageDisplay({ children, contentLabel, currentPage, disabled}) {
+function PageDisplay({ children, contentLabel, currentPage, isControllable}) {
   const [pageIndex, setPageIndex] = useState(0);
   useEffect(() => {
     setPageIndex(currentPage);
@@ -20,7 +20,6 @@ function PageDisplay({ children, contentLabel, currentPage, disabled}) {
     const isSelected = index == pageIndex;
     const selectButton = (
       <button
-        disabled={disabled}
         key={index}
         onClick={(e) => {
           setPageIndex(index);
@@ -43,7 +42,7 @@ function PageDisplay({ children, contentLabel, currentPage, disabled}) {
   }
   return (
     <div>
-      {pageSelectButtonList}
+      {!isControllable ? undefined :  pageSelectButtonList}
       {content}
     </div>
   );

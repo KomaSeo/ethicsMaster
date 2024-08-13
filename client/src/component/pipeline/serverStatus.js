@@ -4,21 +4,23 @@ function ServerStatus() {
   const [statusText, setStatusText] = useState("Checking...");
   const [statusEmoji, setStatusEmoji] = useState("⚪️");
   useEffect(() => {
-    const serverPromise = axios.get("/serverStatus");
-    serverPromise
-      .then((retVal) => {
-        if (retVal.status >= 200 && retVal.status < 300) {
-          setStatusText("Server Online");
-          setStatusEmoji("🟢");
-        } else {
-          setStatusText("Server has error.");
+    setInterval(() => {
+      const serverPromise = axios.get("/serverStatus");
+      serverPromise
+        .then((retVal) => {
+          if (retVal.status >= 200 && retVal.status < 300) {
+            setStatusText("Server Online");
+            setStatusEmoji("🟢");
+          } else {
+            setStatusText("Server has error.");
+            setStatusEmoji("🔴");
+          }
+        })
+        .catch(() => {
+          setStatusText("Server Offline");
           setStatusEmoji("🔴");
-        }
-      })
-      .catch(() => {
-        setStatusText("Server Offline");
-        setStatusEmoji("🔴");
-      });
+        });
+    },5000);
   });
   return (
     <div>
