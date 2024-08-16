@@ -1,5 +1,5 @@
 import React from "react";
-import {DropDownWithArray} from "../UI/dropdown.js"
+import {DropDownWithArray} from "../UI/dropdown"
 const initStanceCards = ["Very Positive", "Positive", "neutral", "negative", "very negative"]
 
 function StanceDropDownMenu({ onChange }) {

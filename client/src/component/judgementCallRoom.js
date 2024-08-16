@@ -1,18 +1,14 @@
-import { ServerStatus } from "./pipeline/serverStatus.js";
-import { ProductManager, ProductPanel } from "./pipeline/product.js";
-import { CriteriaDrowdownMenu } from "./pipeline/criteria.js";
-import {
-  PropertyQuery,
-  PropertyListPanel,
-} from "./pipeline/personaProperty.js";
+import { ServerStatus } from "./pipeline/serverStatus";
+import { ProductManager, ProductPanel } from "./pipeline/product";
+import { CriteriaDrowdownMenu } from "./pipeline/criteria";
+import { PropertyQuery, PropertyListPanel } from "./pipeline/personaProperty";
 import { useEffect, useState } from "react";
-import { PersonaManager, PersonaPanel } from "./pipeline/persona.js";
-import { StanceDropDownMenu } from "./pipeline/stance.js";
-import { ReveiwPanel } from "./pipeline/review.js";
-import { PageDisplay } from "./UI/pageDisplay.js";
-import SiderBar from "./UI/navigationSidebar.js";
-import { TimeBar, StageBar } from "./UI/progressBar.js";
-import CollaborativeEditor from "./UI/collaborativeEditor.js";
+import { PersonaManager, PersonaPanel } from "./pipeline/persona";
+import { StanceDropDownMenu } from "./pipeline/stance";
+import { ReveiwPanel } from "./pipeline/review";
+import { PageDisplay } from "./UI/pageDisplay";
+import SiderBar from "./UI/navigationSidebar";
+import { TimeBar, StageBar } from "./UI/progressBar";
 import { useLoaderData } from "react-router-dom";
 function Card({ cardHeaderContent, children }) {
   return (
@@ -92,83 +88,77 @@ function JudgementCall() {
         {timeBar}
 
         <StageBar stageList={gameLabel} proceedIndex={2}></StageBar>
-        <PageDisplay
-          currentPage={pageIndex}
-          isControllable={false}
-          contentLabel={pipelineLabel}
-        >
-          <Card cardHeaderContent={"Product"}>
-            <ProductManager onSelectChange={setProduct}></ProductManager>
-          </Card>
-          <Card cardHeaderContent={"Property"}>
-            <CriteriaDrowdownMenu onChange={setCriteria}></CriteriaDrowdownMenu>
-            <PropertyQuery
-              product={selectedProduct}
-              criteria={criteria}
-              onChange={setPropertyList}
-            ></PropertyQuery>
-          </Card>
-          <Card cardHeaderContent={"Persona 1"}>
-            <PersonaManager
-              product={selectedProduct}
-              propertyList={propertyList}
-              onChangeSelect={(persona) => {
-                const newPersonaList = [...selectedPersonaList];
-                newPersonaList[0] = persona;
-                setPersonaList(newPersonaList);
-              }}
-            ></PersonaManager>
-          </Card>
-          <Card cardHeaderContent={"Persona 2"}>
-            <PersonaManager
-              product={selectedProduct}
-              propertyList={propertyList}
-              onChangeSelect={(persona) => {
-                const newPersonaList = [...selectedPersonaList];
-                newPersonaList[1] = persona;
-                setPersonaList(newPersonaList);
-              }}
-            ></PersonaManager>
-          </Card>
-          <Card cardHeaderContent={"Persona 3"}>
-            <PersonaManager
-              product={selectedProduct}
-              propertyList={propertyList}
-              onChangeSelect={(persona) => {
-                const newPersonaList = [...selectedPersonaList];
-                newPersonaList[2] = persona;
-                setPersonaList(newPersonaList);
-              }}
-            ></PersonaManager>
-          </Card>
-          <Card cardHeaderContent="Review 1">
-            <StanceDropDownMenu onChange={setStance}></StanceDropDownMenu>
-            <ReveiwPanel
-              product={selectedProduct}
-              stance={stance}
-              persona={selectedPersonaList?.[0]}
-              evaluationStandard={criteria}
-            ></ReveiwPanel>
-          </Card>
-          <Card cardHeaderContent="Review 2">
-            <StanceDropDownMenu onChange={setStance}></StanceDropDownMenu>
-            <ReveiwPanel
-              product={selectedProduct}
-              stance={stance}
-              persona={selectedPersonaList?.[1]}
-              evaluationStandard={criteria}
-            ></ReveiwPanel>
-          </Card>
-          <Card cardHeaderContent="Review 3">
-            <StanceDropDownMenu onChange={setStance}></StanceDropDownMenu>
-            <ReveiwPanel
-              product={selectedProduct}
-              stance={stance}
-              persona={selectedPersonaList?.[2]}
-              evaluationStandard={criteria}
-            ></ReveiwPanel>
-          </Card>
-        </PageDisplay>
+        <Card cardHeaderContent={"Product"}>
+          <ProductManager onSelectChange={setProduct}></ProductManager>
+        </Card>
+        <Card cardHeaderContent={"Property"}>
+          <CriteriaDrowdownMenu onChange={setCriteria}></CriteriaDrowdownMenu>
+          <PropertyQuery
+            product={selectedProduct}
+            criteria={criteria}
+            onChange={setPropertyList}
+          ></PropertyQuery>
+        </Card>
+        <Card cardHeaderContent={"Persona 1"}>
+          <PersonaManager
+            product={selectedProduct}
+            propertyList={propertyList}
+            onChangeSelect={(persona) => {
+              const newPersonaList = [...selectedPersonaList];
+              newPersonaList[0] = persona;
+              setPersonaList(newPersonaList);
+            }}
+          ></PersonaManager>
+        </Card>
+        <Card cardHeaderContent={"Persona 2"}>
+          <PersonaManager
+            product={selectedProduct}
+            propertyList={propertyList}
+            onChangeSelect={(persona) => {
+              const newPersonaList = [...selectedPersonaList];
+              newPersonaList[1] = persona;
+              setPersonaList(newPersonaList);
+            }}
+          ></PersonaManager>
+        </Card>
+        <Card cardHeaderContent={"Persona 3"}>
+          <PersonaManager
+            product={selectedProduct}
+            propertyList={propertyList}
+            onChangeSelect={(persona) => {
+              const newPersonaList = [...selectedPersonaList];
+              newPersonaList[2] = persona;
+              setPersonaList(newPersonaList);
+            }}
+          ></PersonaManager>
+        </Card>
+        <Card cardHeaderContent="Review 1">
+          <StanceDropDownMenu onChange={setStance}></StanceDropDownMenu>
+          <ReveiwPanel
+            product={selectedProduct}
+            stance={stance}
+            persona={selectedPersonaList?.[0]}
+            evaluationStandard={criteria}
+          ></ReveiwPanel>
+        </Card>
+        <Card cardHeaderContent="Review 2">
+          <StanceDropDownMenu onChange={setStance}></StanceDropDownMenu>
+          <ReveiwPanel
+            product={selectedProduct}
+            stance={stance}
+            persona={selectedPersonaList?.[1]}
+            evaluationStandard={criteria}
+          ></ReveiwPanel>
+        </Card>
+        <Card cardHeaderContent="Review 3">
+          <StanceDropDownMenu onChange={setStance}></StanceDropDownMenu>
+          <ReveiwPanel
+            product={selectedProduct}
+            stance={stance}
+            persona={selectedPersonaList?.[2]}
+            evaluationStandard={criteria}
+          ></ReveiwPanel>
+        </Card>
       </div>
     </div>
   );

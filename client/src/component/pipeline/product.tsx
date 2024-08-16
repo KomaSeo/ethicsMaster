@@ -1,8 +1,7 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { RequestButton } from "../UI/serverRequestButton.js";
-import {SelectOnList} from "../UI/selectOnList.js"
-import CollaborativeEditor from "../UI/collaborativeEditor.js";
+import { RequestButton } from "../UI/serverRequestButton";
+import {SelectOnList} from "../UI/selectOnList"
 
 interface Product {
   title : string,

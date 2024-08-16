@@ -1,5 +1,5 @@
 import * as React from "react";
-import { DropDownWithArray } from "../UI/dropdown.js";
+import { DropDownWithArray } from "../UI/dropdown";
 const initEvaluationCards = [
   "'Faireness : Treat all stakeholders equitably and prevent undesirable stereotypes and biased.'",
   "'Reliability : Build systems to perform safely even in the worst-case scenario.'",

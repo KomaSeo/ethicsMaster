@@ -40,8 +40,12 @@ function PropertyQuery({
         disabled={disabled}
       ></PropertyListPanel>
       <RequestButton
-        onRequest={(retval: { data: Array<Property> }) => {
-          handleChange(retval.data);
+        onRequest={(retval: { data: Array<string> }) => {
+          const newPropList = [];
+          for(let index in retval.data){
+            newPropList.push({name : retval.data[index],value : ""})
+          }
+          handleChange(newPropList);
         }}
         url={"/personaProperty"}
         config={queryConfig}
@@ -126,4 +130,4 @@ function PropertyListPanel({
   }
   return row;
 }
-export { PropertyQuery, PropertyListPanel };
+export { PropertyQuery, PropertyListPanel, Property };

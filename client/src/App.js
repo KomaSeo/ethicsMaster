@@ -1,6 +1,6 @@
 import "./App.css";
-import LoginPage from "./component/connection/login.js";
-import Room from "./component/connection/room.js";
+import LoginPage from "./component/connection/login.tsx";
+import Room from "./component/connection/room.tsx";
 import JudgementCall from "./component/judgementCallRoom.js";
 import {createBrowserRouter, redirect, RouterProvider, useLoaderData} from 'react-router-dom'
 
