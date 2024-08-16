@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-
-function DropDownWithArray({ onChange, inputArray, label }) {
-  const [arr, setArr] = useState([]);
+import { useEffect, useState } from "react";
+import * as React from "react";
+function DropDownWithArray({ onChange, inputArray, label } : {onChange : (str : string)=>void, inputArray : Array<string>, label : string}) {
+  const [arr, setArr] = useState<Array<string>>([]);
   useEffect(() => {
     setArr(inputArray);
   }, [inputArray]);

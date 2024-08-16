@@ -21,7 +21,7 @@ function ServerStatus() {
           setStatusEmoji("🔴");
         });
     },5000);
-  });
+  },[]);
   return (
     <div>
       <p>{statusText}</p>

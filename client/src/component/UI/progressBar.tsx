@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
+import * as React from 'react'
 
-function TimeBar({ totalTimeInMill, onExpire }) {
+function TimeBar({ totalTimeInMill, onExpire } : {totalTimeInMill : number, onExpire : ()=>void}) {
   const [startDate, setStartDate] = useState(Date.now());
   const [totalTime, setTotalTime] = useState(totalTimeInMill);
   const [remainTimeInMill, setRemainTime] = useState(totalTimeInMill);
@@ -45,12 +46,14 @@ function TimeBar({ totalTimeInMill, onExpire }) {
   );
 }
 
-function StageBar({ stageList, proceedIndex }) {
+function StageBar({ stageList, proceedIndex } : {stageList : Array<string>, proceedIndex : number
+}) {
   const barList = [];
   for (let index in stageList) {
-    const isComplete = index < proceedIndex
-    const isProceed = index == proceedIndex
-    const isPlanned = index > proceedIndex
+    const indexAsNumber = parseInt(index);
+    const isComplete = indexAsNumber < proceedIndex
+    const isProceed = indexAsNumber === proceedIndex
+    const isPlanned = indexAsNumber > proceedIndex
     const newStageIndicator = (
       <li key={index} className="relative w-full my-10">
         <div className="flex items-center">

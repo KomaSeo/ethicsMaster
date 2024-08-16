@@ -7,7 +7,7 @@ import { WebsocketProvider } from 'y-websocket';
 
 const Delta = Quill.import('delta');
 
-const CollaborativeEditor = ({roomName, docName}) => {
+const CollaborativeEditor = ({roomName, docName, userId}) => {
   const [range, setRange] = useState();
   const [lastChange, setLastChange] = useState();
   const [readOnly, setReadOnly] = useState(false);
@@ -30,17 +30,11 @@ const CollaborativeEditor = ({roomName, docName}) => {
         ref={quillRef}
         readOnly={readOnly}
         defaultValue={new Delta()
-          .insert('Hello')
-          .insert('\n', { header: 1 })
-          .insert('Some ')
-          .insert('initial', { bold: true })
-          .insert(' ')
-          .insert('content', { underline: true })
-          .insert('\n')}
+          .insert('이 문구가 보이면 조교에게 말해주세요. 프로그램 오류입니다. (조교는 y-websocket 서버가 켜졌는지 확인해주세요. 켜져있다면 y-websocket 서버의 포트와 도메인 주소를 확인해주세요.)')}
         onSelectionChange={setRange}
         onTextChange={setLastChange}
       />
-      <div class="controls">
+      <div className="controls">
         <label>
           Read Only:{' '}
           <input

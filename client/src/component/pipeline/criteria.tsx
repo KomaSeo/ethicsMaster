@@ -1,5 +1,5 @@
-import React from "react";
-import { DropDownWithArray } from "../dropdown.js";
+import * as React from "react";
+import { DropDownWithArray } from "../UI/dropdown.js";
 const initEvaluationCards = [
   "'Faireness : Treat all stakeholders equitably and prevent undesirable stereotypes and biased.'",
   "'Reliability : Build systems to perform safely even in the worst-case scenario.'",
@@ -9,7 +9,7 @@ const initEvaluationCards = [
   "'Accountability : Take responsibility for how systems operate and their impact on society.'",
   "'User Control : Stakeholders, particularly end users, should be able to understand and expect how the system works.'",
 ];
-function CriteriaDrowdownMenu({ onChange }) {
+function CriteriaDrowdownMenu({ onChange } : {onChange : (selectedString : string)=>void}) {
   return (
     <DropDownWithArray label={"evaluation criteria"} inputArray={initEvaluationCards} onChange={onChange}></DropDownWithArray>
   );

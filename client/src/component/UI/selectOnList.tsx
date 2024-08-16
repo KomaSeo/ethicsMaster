@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-
-function SelectOnList({ list, onSelect }) {
+import { useEffect, useState } from "react";
+import * as React from "react"; 
+function SelectOnList({ list, onSelect } : {list : Array<React.JSX.Element>, onSelect : (index : number)=>void}) {
   const [selectedIndex, setSelectedIndex] = useState(-1);
   useEffect(() => {
     setSelectedIndex(-1);
@@ -8,7 +8,8 @@ function SelectOnList({ list, onSelect }) {
   }, [list.length, onSelect]);
   const displayRow = [];
   for (let index in list) {
-    const isSelected = selectedIndex === index;
+    const indexAsNumber = parseInt(index)
+    const isSelected = selectedIndex === indexAsNumber;
     const singlePanel = (
       <li
         key={index}
@@ -16,8 +17,8 @@ function SelectOnList({ list, onSelect }) {
       >
         <button
           onClick={()=>{
-            setSelectedIndex(index)
-            onSelect(index)
+            setSelectedIndex(indexAsNumber)
+            onSelect(indexAsNumber)
           }}
           className="block w-full p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
         >

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { DropDownWithArray } from "../dropdown.js";
-import { RequestButton } from "../serverRequestButton.js";
-import { SelectOnList } from "../selectOnList.js";
+import { DropDownWithArray } from "../UI/dropdown.js";
+import { RequestButton } from "../UI/serverRequestButton.js";
+import { SelectOnList } from "../UI/selectOnList.js";
+import { Product } from "./product.js";
 const distanceOption = ["direct", "indirect", "excluded"];
 
 function PersonaManager({

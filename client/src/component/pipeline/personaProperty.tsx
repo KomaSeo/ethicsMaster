@@ -1,8 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { RequestButton } from "../serverRequestButton.js";
+import { useEffect, useState } from "react";
+import * as React from "react";
+import { RequestButton } from "../UI/serverRequestButton.js";
+import { Product } from "./product.js";
 
-function PropertyQuery({ product, criteria, onChange }) {
-  const [propertyList, setPropertyList] = useState([]);
+interface Property {
+  name: string;
+  value: string | undefined;
+}
+
+function PropertyQuery({
+  product,
+  criteria,
+  onChange,
+}: {
+  product: Product;
+  criteria: string;
+  onChange: (propertyList: Array<Property>) => void;
+}) {
+  const [propertyList, setPropertyList] = useState<Array<Property>>([]);
   const disabled = false;
   const queryConfig = {
     params: {
@@ -10,18 +25,22 @@ function PropertyQuery({ product, criteria, onChange }) {
       criteria: criteria,
     },
   };
-  function handleChange(changedList){
+  function handleChange(changedList: Array<Property>) {
     if (typeof onChange === "function") {
       onChange(changedList);
     }
-    setPropertyList(changedList)
+    setPropertyList(changedList);
   }
 
   return (
     <div>
-      <PropertyListPanel propertyList={propertyList} setPropertyList={handleChange} disabled={disabled}></PropertyListPanel>
+      <PropertyListPanel
+        propertyList={propertyList}
+        setPropertyList={handleChange}
+        disabled={disabled}
+      ></PropertyListPanel>
       <RequestButton
-        onRequest={(retval) => {
+        onRequest={(retval: { data: Array<Property> }) => {
           handleChange(retval.data);
         }}
         url={"/personaProperty"}
@@ -32,23 +51,32 @@ function PropertyQuery({ product, criteria, onChange }) {
     </div>
   );
 }
-function PropertyListPanel({propertyList, setPropertyList, onChange, disabled }) {
+function PropertyListPanel({
+  propertyList,
+  setPropertyList,
+  disabled,
+}: {
+  propertyList: Array<Property>;
+  setPropertyList: (array: Array<Property>) => void,
+  disabled : boolean
+}) {
   const row = [];
   for (let index in propertyList) {
+    const indexAsNumber = parseInt(index)
     const content = (
       <input
         type="text"
         className="col-span-4 block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         onChange={(e) => {
-          handlePropertyChange(index, e.target.value);
+          handlePropertyNameChange(indexAsNumber, e.target.value);
         }}
-        value={propertyList[index]}
+        value={propertyList[index].name}
       ></input>
     );
-    const buttonForDelete = (
+    const deleteButton = (
       <button
         onClick={() => {
-          deleteProperty(index);
+          deleteProperty(indexAsNumber);
         }}
         className="col-span-1 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-2.5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
       >
@@ -58,36 +86,35 @@ function PropertyListPanel({propertyList, setPropertyList, onChange, disabled })
     const propertyText = (
       <div className={disabled ? "" : "grid grid-cols-5"} key={index}>
         {content}
-        {disabled ? undefined : buttonForDelete}
+        {disabled ? undefined : deleteButton}
       </div>
     );
     row.push(propertyText);
   }
   const buttonForAddProperty = disabled ? undefined : (
-    <button key={propertyList.length ?? 0}
-    className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+    <button
+      key={propertyList.length ?? 0}
+      className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
       onClick={addEmptyProperty}
     >
       Add property
     </button>
   );
   row.push(buttonForAddProperty);
-  useEffect(() => {
-    if (typeof onChange === "function") {
-      onChange(propertyList);
-    }
-  }, [propertyList, onChange]);
   function addEmptyProperty() {
     const newList = [...propertyList];
-    newList.push("");
+    newList.push({
+      name : "",
+      value : undefined
+    });
     setPropertyList(newList);
   }
-  function handlePropertyChange(index, changeObject) {
+  function handlePropertyNameChange(index: number, changeObject : string) {
     const newArray = [...propertyList];
-    newArray[index] = changeObject;
+    newArray[index].name = changeObject;
     setPropertyList(newArray);
   }
-  function deleteProperty(index) {
+  function deleteProperty(index: number) {
     const deletedList = propertyList.filter((val, valIndex) => {
       if (valIndex === index) {
         return false;
@@ -97,6 +124,6 @@ function PropertyListPanel({propertyList, setPropertyList, onChange, disabled })
     });
     setPropertyList(deletedList);
   }
-  return row
+  return row;
 }
-export { PropertyQuery,PropertyListPanel };
+export { PropertyQuery, PropertyListPanel };

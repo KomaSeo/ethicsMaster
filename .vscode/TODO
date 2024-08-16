@@ -4,3 +4,4 @@
 4. stakeholder(persona)
 5. chatting system between student
 6. 
+HOST=localhost PORT=1234 npx y-websocket
