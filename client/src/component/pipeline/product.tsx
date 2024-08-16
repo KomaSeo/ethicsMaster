@@ -38,7 +38,7 @@ function ProductQuery({ onGenerate } : {onGenerate : (product : Array<Product>) 
     occasion : ""
   });
   const requestConfig = {
-    scenarioInfo,
+    params : scenarioInfo,
   }
   function handleScenario(returnScenarioValue : {data : Array<Product>}) {
     if (typeof onGenerate === "function") {

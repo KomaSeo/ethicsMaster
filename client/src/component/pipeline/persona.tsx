@@ -72,8 +72,16 @@ function PersonaManager({
         proceedText="generating..."
         url={"/persona"}
         config={personaParam}
-        onRequest={(retVal : {data : Persona}) => {
-          addPersona(retVal.data);
+        onRequest={(retVal : {data : Array<{propertyName:string, propertyContent : string}>}) => {
+          const propertyList = []
+          for(let index in retVal.data){
+            const newProperty : Property = {
+              name : retVal.data[index].propertyName,
+              value : retVal.data[index].propertyContent
+            }
+            propertyList.push(newProperty)
+          }
+          addPersona(propertyList);
         }}
       ></RequestButton>
       <SelectOnList list={panelList} onSelect={setIndex}></SelectOnList>

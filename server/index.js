@@ -18,11 +18,20 @@ app.use(express.static("./static"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
+const debug = true;
 app.get("/serverStatus", (req, res) => {
   res.status(200).send("Server Online.");
 });
 app.get("/product", (req, res) => {
   const { organization, coreTech, time, place, occasion } = req.query;
+  if(debug){
+    console.log("product request ------ \n")
+    console.log("organization : " + organization + "\n");
+    console.log("coreTech : " + coreTech + "\n");
+    console.log("time : " + time + "\n");
+    console.log("place : " + place + "\n");
+    console.log("occasion : " + occasion + "\n");
+  }
   const productQuery = generateProduct(
     organization,
     coreTech,
@@ -37,9 +46,14 @@ app.get("/product", (req, res) => {
 app.get("/personaProperty", (req, res) => {
   let propertyQuery;
   try {
-    const { criteria, product } = req.query;
+    const { criteria, product } = req.query;  
     const productInfo = convertProductToStirng(product)
 
+    if(debug){
+      console.log("property request ------ \n")
+      console.log("criteria : " + criteria + "\n");
+      console.log("product : " + productInfo + "\n");
+    }
     propertyQuery = generatePersonaProperty(
       criteria,
       productInfo
@@ -67,6 +81,13 @@ app.get("/persona", (req, res)=>{
         for(let personaIndex in previousPersonaList){
           const personaString = convertPersonaToString(previousPersonaList[personaIndex])
           personaStringList.push(personaString)
+        }
+        if(debug){
+          console.log("persona request ------ \n")
+          console.log("product : " + productString + "\n");
+          console.log("property : " + propertyList + "\n");
+          console.log("distanceType : " + distanceType + "\n");
+          console.log("personaStringList : " + personaStringList + "\n");
         }
         personaQuery = generatePersona(productString,propertyList,distanceType,personaStringList);
         personaQuery.then((generatedPersona)=>{
