@@ -13,8 +13,8 @@ function PropertyQuery({
   criteria,
   onChange,
 }: {
-  product: Product;
-  criteria: string;
+  product: Product | undefined;
+  criteria: string | undefined;
   onChange: (propertyList: Array<Property>) => void;
 }) {
   const [propertyList, setPropertyList] = useState<Array<Property>>([]);

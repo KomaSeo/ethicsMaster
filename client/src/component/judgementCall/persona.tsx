@@ -14,8 +14,8 @@ function PersonaManager({
   propertyList: generatePropertyList,
   onChangeSelect,
 } : {
-  product : Product,
-  propertyList : Array<Property>,
+  product : Product | undefined,
+  propertyList : Array<Property> | undefined,
   onChangeSelect : (selectedPersona : Persona)=>void
 
 }) {

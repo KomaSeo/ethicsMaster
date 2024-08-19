@@ -1,16 +1,20 @@
-import { ServerStatus } from "./pipeline/serverStatus";
-import { ProductManager, ProductPanel } from "./pipeline/product";
-import { CriteriaDrowdownMenu } from "./pipeline/criteria";
-import { PropertyQuery, PropertyListPanel } from "./pipeline/personaProperty";
+import { ServerStatus } from "./judgementCall/serverStatus";
+import { Product, ProductManager, ProductPanel } from "./judgementCall/product";
+import { CriteriaDrowdownMenu } from "./judgementCall/criteria";
+import { PropertyQuery, PropertyListPanel } from "./judgementCall/personaProperty";
 import { useEffect, useState } from "react";
-import { PersonaManager, PersonaPanel } from "./pipeline/persona";
-import { StanceDropDownMenu } from "./pipeline/stance";
-import { ReveiwPanel } from "./pipeline/review";
+import { Persona, PersonaManager, PersonaPanel } from "./judgementCall/persona";
+import { StanceDropDownMenu } from "./judgementCall/stance";
+import { ReveiwPanel } from "./judgementCall/review";
 import { PageDisplay } from "./UI/pageDisplay";
 import SiderBar from "./UI/navigationSidebar";
 import { TimeBar, StageBar } from "./UI/progressBar";
 import { useLoaderData } from "react-router-dom";
-function Card({ cardHeaderContent, children }) {
+import { Property } from "./judgementCall/personaProperty";
+import * as React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setRoomId, setUserId } from "../features/judgementCallSlice";
+function Card({ cardHeaderContent, children } : {cardHeaderContent : string, children : React.ReactNode}) {
   return (
     <div className="max-w-screen-xl p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
       <h1>{cardHeaderContent}</h1>
@@ -20,12 +24,13 @@ function Card({ cardHeaderContent, children }) {
 }
 
 function JudgementCall() {
-  const { userId, roomId } = useLoaderData();
-  const [selectedProduct, setProduct] = useState(undefined);
-  const [criteria, setCriteria] = useState(undefined);
-  const [propertyList, setPropertyList] = useState(undefined);
-  const [stance, setStance] = useState(undefined);
-  const [selectedPersonaList, setPersonaList] = useState([]);
+  const { userId, roomId } = useLoaderData() as {userId : number , roomId : number};//Currently data loader for react-router-dom doesn't support typescript.
+  const dispatch = useDispatch()
+  const [selectedProduct, setProduct] = useState<Product>();
+  const [criteria, setCriteria] = useState<string>();
+  const [propertyList, setPropertyList] = useState<Array<Property>>();
+  const [stance, setStance] = useState<string>();
+  const [selectedPersonaList, setSelectedPersona] = useState<Array<Persona>>([]);
   const gameLabel = [
     "Identify the product",
     "Brainstorm and identify stakeholders",
@@ -60,6 +65,10 @@ function JudgementCall() {
       }}
     ></TimeBar>
   );
+  useEffect(()=>{
+    dispatch(setRoomId(roomId));
+    dispatch(setUserId(userId));
+  },[])
   useEffect(() => {
     resetTimeBar();
   }, [pageIndex]);
@@ -82,7 +91,7 @@ function JudgementCall() {
       </h1>
       <ServerStatus></ServerStatus>
       <div className="lg:pr-[19.5rem] mx-5 max-w-screen-xl xl:mx-auto">
-        <SiderBar content={sideContent} contentLabel={pipelineLabel}></SiderBar>
+        <SiderBar content={sideContent}></SiderBar>
 
         <div className="flex justify-between mb-1"></div>
         {timeBar}
@@ -106,7 +115,7 @@ function JudgementCall() {
             onChangeSelect={(persona) => {
               const newPersonaList = [...selectedPersonaList];
               newPersonaList[0] = persona;
-              setPersonaList(newPersonaList);
+              setSelectedPersona(newPersonaList);
             }}
           ></PersonaManager>
         </Card>
@@ -117,7 +126,7 @@ function JudgementCall() {
             onChangeSelect={(persona) => {
               const newPersonaList = [...selectedPersonaList];
               newPersonaList[1] = persona;
-              setPersonaList(newPersonaList);
+              setSelectedPersona(newPersonaList);
             }}
           ></PersonaManager>
         </Card>
@@ -128,7 +137,7 @@ function JudgementCall() {
             onChangeSelect={(persona) => {
               const newPersonaList = [...selectedPersonaList];
               newPersonaList[2] = persona;
-              setPersonaList(newPersonaList);
+              setSelectedPersona(newPersonaList);
             }}
           ></PersonaManager>
         </Card>
@@ -163,7 +172,7 @@ function JudgementCall() {
     </div>
   );
 
-  function generateSideBarContent(pipelineLabel) {
+  function generateSideBarContent(pipelineLabel : Array<string>) {
     const sideContentList = [];
     const sideContentLabel = pipelineLabel;
     if (selectedProduct) {
@@ -178,8 +187,10 @@ function JudgementCall() {
       sideContentList.push(
         <PropertyListPanel
           disabled={true}
-          propertyList={propertyList}
-        ></PropertyListPanel>
+          propertyList={propertyList} 
+          setPropertyList={function (array: Array<Property>): void {
+            console.log("Setting property list is disabled.")
+          } }></PropertyListPanel>
       );
     }
     for (let index in selectedPersonaList) {
@@ -187,14 +198,18 @@ function JudgementCall() {
         <PersonaPanel
           key={index}
           initPersona={selectedPersonaList[index]}
-          disabled={true}
-        ></PersonaPanel>
+          disabled={true} onChange={function (changedPersona: Persona): void {
+            console.log("Setting property list is disabled.")
+          } }></PersonaPanel>
       );
     }
 
     const sideContent = (
-      <PageDisplay contentLabel={sideContentLabel}>
-        {sideContentList}
+      <PageDisplay 
+        contentLabel={sideContentLabel} 
+        children={sideContentList} 
+        currentPage={0} 
+        isControllable={true}>
       </PageDisplay>
     );
     return { sideContentLabel, sideContent };

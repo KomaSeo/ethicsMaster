@@ -155,7 +155,7 @@ function ProductDisplay({ initProductList, onSelectChange } : {initProductList :
   }
   return <SelectOnList list={row} onSelect={setIndex}></SelectOnList>;
 }
-function ProductPanel({ productInfo, onChange, disabled } : { productInfo : Product, onChange : (product : Product)=>void, disabled : boolean}) {
+function ProductPanel({ productInfo, onChange, disabled } : { productInfo : Product, onChange? : ((product : Product)=>void), disabled : boolean}) {
   const [product, setProduct] = useState<Product>(productInfo)
   useEffect(() => {
     setProduct(productInfo)
@@ -163,9 +163,7 @@ function ProductPanel({ productInfo, onChange, disabled } : { productInfo : Prod
   function handleProductChange(changeObject : Product){
 
     setProduct(changeObject);
-    if(typeof(onChange) === "function"){
-      onChange(changeObject);
-    }
+    onChange?.(changeObject)
   }
   return (
     <div>

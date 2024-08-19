@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import * as React from "react";
+import axios from "axios"
 function ServerStatus() {
   const [statusText, setStatusText] = useState("Checking...");
   const [statusEmoji, setStatusEmoji] = useState("⚪️");
@@ -7,7 +8,7 @@ function ServerStatus() {
     setInterval(() => {
       const serverPromise = axios.get("/serverStatus");
       serverPromise
-        .then((retVal) => {
+        .then((retVal : {status : number}) => {
           if (retVal.status >= 200 && retVal.status < 300) {
             setStatusText("Server Online");
             setStatusEmoji("🟢");
