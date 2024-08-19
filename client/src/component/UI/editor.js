@@ -4,7 +4,7 @@ import "./editor.css";
 
 // Editor is an uncontrolled React component
 const Editor = forwardRef(
-  ({ readOnly, defaultValue, onTextChange, onSelectionChange }, ref) => {
+  ({ readOnly, defaultValue, onTextChange, onSelectionChange,placeholder }, ref) => {
     const containerRef = useRef(null);
     const defaultValueRef = useRef(defaultValue);
     const onTextChangeRef = useRef(onTextChange);
@@ -26,6 +26,7 @@ const Editor = forwardRef(
       );
       const quill = new Quill(editorContainer, {
         modules: {toolbar : false},
+        placeholder: placeholder,
         theme: 'snow',
       });
 
@@ -36,7 +37,8 @@ const Editor = forwardRef(
       }
 
       quill.on(Quill.events.TEXT_CHANGE, (...args) => {
-        onTextChangeRef.current?.(...args);
+        onTextChangeRef.current?.({...args, text : quill.getText()});
+        
       });
 
       quill.on(Quill.events.SELECTION_CHANGE, (...args) => {

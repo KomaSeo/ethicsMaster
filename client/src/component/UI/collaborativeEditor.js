@@ -1,66 +1,63 @@
-import React, { useEffect, useRef, useState } from 'react';
-import Editor from './editor';
-import Quill from 'quill';
-import * as Y from 'yjs'
-import { QuillBinding } from 'y-quill';
-import { WebsocketProvider } from 'y-websocket';
+import React, { useEffect, useRef, useState } from "react";
+import Editor from "./editor";
+import Quill from "quill";
+import * as Y from "yjs";
+import { QuillBinding } from "y-quill";
+import { WebsocketProvider } from "y-websocket";
+import { useSelector } from "react-redux";
 
-const Delta = Quill.import('delta');
+const Delta = Quill.import("delta");
 
-const CollaborativeEditor = ({roomName, docName, userId}) => {
+const CollaborativeEditor = ({ docName, placeholder, onTextChange, value }) => {
+  const roomId = useSelector((state) => state.judgementCallRoom.roomId);
+  const userId = useSelector((state) => state.judgementCallRoom.userId);
+  const isInitialize = useRef(false);
+  const textRef = useRef(undefined);
   const [range, setRange] = useState();
-  const [lastChange, setLastChange] = useState();
   const [readOnly, setReadOnly] = useState(false);
-
   // Use a ref to access the quill instance directly
   const quillRef = useRef();
+  function handleTextChange({ text }) {
+    onTextChange(text);
+  }
 
-  useEffect(()=>{
-    const ydoc = new Y.Doc()
-    const wsProvider = new WebsocketProvider('ws://localhost:1234', roomName,ydoc)
-    wsProvider.on('status',event=>{
-        console.log(event.status)
-    })
-    const ytext = ydoc.getText(docName)
-    const binding = new QuillBinding(ytext, quillRef.current)
-  },[])
+  useEffect(() => {
+    if (roomId != 0 && userId != 0 && !isInitialize.current) {
+      console.log(`Initialize connect with room id ${roomId}`);
+      const ydoc = new Y.Doc();
+      const wsProvider = new WebsocketProvider(
+        "ws://localhost:1234",
+        roomId,
+        ydoc
+      );
+      /*
+      wsProvider.on("status", (event) => {
+        console.log(event.status);
+      });*/
+      const ytext = ydoc.getText(docName);
+      const binding = new QuillBinding(ytext, quillRef.current);
+      textRef.current = ytext;
+      quillRef.placeholder = placeholder;
+      isInitialize.current = true;
+    }
+  }, [roomId]);
+  useEffect(() => {
+    if (textRef && value) {
+      const ytext = textRef.current;
+      ytext.delete(0, ytext.length);
+      textRef.current.insert(0, value);
+    }
+  }, [value]);
   return (
-    <div>
+    <div className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
       <Editor
         ref={quillRef}
         readOnly={readOnly}
-        defaultValue={new Delta()
-          .insert('이 문구가 보이면 조교에게 말해주세요. 프로그램 오류입니다. (조교는 y-websocket 서버가 켜졌는지 확인해주세요. 켜져있다면 y-websocket 서버의 포트와 도메인 주소를 확인해주세요.)')}
+        defaultValue={new Delta().insert("Loading...")}
         onSelectionChange={setRange}
-        onTextChange={setLastChange}
+        onTextChange={handleTextChange}
+        placeholder={placeholder}
       />
-      <div className="controls">
-        <label>
-          Read Only:{' '}
-          <input
-            type="checkbox"
-            value={readOnly}
-            onChange={(e) => setReadOnly(e.target.checked)}
-          />
-        </label>
-        <button
-          className="controls-right"
-          type="button"
-          onClick={() => {
-            alert(quillRef.current?.getLength());
-          }}
-        >
-          Get Content Length
-        </button>
-      </div>
-      <div className="state">
-        <div className="state-title">Current Range:</div>
-        {range ? JSON.stringify(range) : 'Empty'}
-      </div>
-      <div className="state">
-        <div className="state-title">Last Change:</div>
-        {lastChange ? JSON.stringify(lastChange.ops) : 'Empty'}
-      </div>
     </div>
   );
 };

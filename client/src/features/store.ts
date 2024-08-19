@@ -3,6 +3,6 @@ import judgementCallSliceReducer from "./judgementCallSlice";
 
 export default configureStore({
     reducer : {
-        JudgementCall : judgementCallSliceReducer
+        judgementCallRoom : judgementCallSliceReducer
     }
 })
