@@ -1,23 +1,37 @@
-import React, { useEffect, useRef, useState } from "react";
+import * as React from "react";
+import { useEffect, useRef, useState } from "react";
 import Editor from "./editor";
-import Quill from "quill";
+import Quill, { EmitterSource, Range } from "quill";
 import * as Y from "yjs";
 import { QuillBinding } from "y-quill";
 import { WebsocketProvider } from "y-websocket";
 import { useSelector } from "react-redux";
+import { RootState } from "../../features/store";
 
 const Delta = Quill.import("delta");
 
-const CollaborativeEditor = ({ docName, placeholder, onTextChange, value }) => {
-  const roomId = useSelector((state) => state.judgementCallRoom.roomId);
-  const userId = useSelector((state) => state.judgementCallRoom.userId);
+const CollaborativeEditor = ({
+  docName,
+  placeholder,
+  onTextChange,
+  value,
+}: {
+  docName: string;
+  placeholder: string;
+  onTextChange: (text: string) => void;
+  value: string;
+}) => {
+  const roomId = useSelector(
+    (state: RootState) => state.RoomSlice.roomId
+  );
+  const userId = useSelector(
+    (state: RootState) => state.RoomSlice.userId
+  );
   const isInitialize = useRef(false);
-  const textRef = useRef(undefined);
-  const [range, setRange] = useState();
+  const textRef = useRef<Y.Text>();
   const [readOnly, setReadOnly] = useState(false);
-  // Use a ref to access the quill instance directly
-  const quillRef = useRef();
-  function handleTextChange({ text }) {
+  const quillRef = useRef<Quill>(null);
+  function handleTextChange({ text }: { text: string }) {
     onTextChange(text);
   }
 
@@ -27,7 +41,7 @@ const CollaborativeEditor = ({ docName, placeholder, onTextChange, value }) => {
       const ydoc = new Y.Doc();
       const wsProvider = new WebsocketProvider(
         "ws://localhost:1234",
-        roomId,
+        roomId.toString(),
         ydoc
       );
       /*
@@ -37,15 +51,14 @@ const CollaborativeEditor = ({ docName, placeholder, onTextChange, value }) => {
       const ytext = ydoc.getText(docName);
       const binding = new QuillBinding(ytext, quillRef.current);
       textRef.current = ytext;
-      quillRef.placeholder = placeholder;
       isInitialize.current = true;
     }
   }, [roomId]);
   useEffect(() => {
     if (textRef && value) {
       const ytext = textRef.current;
-      ytext.delete(0, ytext.length);
-      textRef.current.insert(0, value);
+      ytext?.delete(0, ytext.length);
+      textRef.current?.insert(0, value);
     }
   }, [value]);
   return (
@@ -54,7 +67,6 @@ const CollaborativeEditor = ({ docName, placeholder, onTextChange, value }) => {
         ref={quillRef}
         readOnly={readOnly}
         defaultValue={new Delta().insert("Loading...")}
-        onSelectionChange={setRange}
         onTextChange={handleTextChange}
         placeholder={placeholder}
       />

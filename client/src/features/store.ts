@@ -1,8 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-import judgementCallSliceReducer from "./judgementCallSlice";
+import RoomSlice from "./RoomSlice";
 
-export default configureStore({
+const store =  configureStore({
     reducer : {
-        judgementCallRoom : judgementCallSliceReducer
+        RoomSlice : RoomSlice
+        
     }
 })
+
+export type RootState = ReturnType<typeof store.getState>
+export default store

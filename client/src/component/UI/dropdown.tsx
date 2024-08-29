@@ -5,7 +5,7 @@ function DropDownWithArray({ onChange, inputArray, label } : {onChange : (str : 
   useEffect(() => {
     setArr(inputArray);
   }, [inputArray]);
-  const optionList = [];
+  const optionList : React.ReactNode[] = [];
   for (let index in arr) {
     optionList.push(
       <option key={index} value={arr[index]}>

@@ -48,7 +48,7 @@ function TimeBar({ totalTimeInMill, onExpire } : {totalTimeInMill : number, onEx
 
 function StageBar({ stageList, proceedIndex } : {stageList : Array<string>, proceedIndex : number
 }) {
-  const barList = [];
+  const barList : React.ReactNode[] = [];
   for (let index in stageList) {
     const indexAsNumber = parseInt(index);
     const isComplete = indexAsNumber < proceedIndex

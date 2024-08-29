@@ -6,7 +6,7 @@ function SelectOnList({ list, onSelect } : {list : Array<React.JSX.Element>, onS
     setSelectedIndex(-1);
     onSelect(-1);
   }, [list.length, onSelect]);
-  const displayRow = [];
+  const displayRow : React.ReactNode[] = [];
   for (let index in list) {
     const indexAsNumber = parseInt(index)
     const isSelected = selectedIndex === indexAsNumber;

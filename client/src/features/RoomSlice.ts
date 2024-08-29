@@ -21,6 +21,5 @@ export const judgementCallSlice = createSlice({
     }
   },
 });
-
 export const { setRoomId, setUserId } = judgementCallSlice.actions;
 export default judgementCallSlice.reducer;

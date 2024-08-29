@@ -45,7 +45,7 @@ function PersonaManager({
     newList.push(newPersona);
     setPersonaList(newList);
   }
-  const panelList = [];
+  const panelList : JSX.Element[] = [];
   for (let i in personaList) {
     const indexAsNumber = parseInt(i)
     const newPanel = (
@@ -73,7 +73,7 @@ function PersonaManager({
         url={"/persona"}
         config={personaParam}
         onRequest={(retVal : {data : Array<{propertyName:string, propertyContent : string}>}) => {
-          const propertyList = []
+          const propertyList : Property[] = []
           for(let index in retVal.data){
             const newProperty : Property = {
               name : retVal.data[index].propertyName,
@@ -99,7 +99,7 @@ function PersonaPanel({ initPersona, onChange, disabled} : {initPersona : Person
     setPropertyList(newPropertyList);
     onChange(newPropertyList);
   }
-  const propertyRow = [];
+  const propertyRow : JSX.Element[] = [];
   for (let i in persona) {
     const indexAsNumber = parseInt(i)
     const propertyPanel = (

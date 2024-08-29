@@ -3,13 +3,14 @@ import { useState, useEffect } from "react";
 import { RequestButton } from "../UI/serverRequestButton";
 import { SelectOnList } from "../UI/selectOnList";
 import CollaborativeEditor from "../UI/collaborativeEditor";
+import * as Y from 'yjs'
 
 interface Product {
   title: string;
   explanation: string;
 }
-interface ScenarioInfo {
-  organization: string;
+interface Scenario {
+  organization: string ;
   coreTech: string;
   time: string;
   place: string;
@@ -41,7 +42,7 @@ function ProductQuery({
 }: {
   onGenerate: (product: Array<Product>) => void;
 }) {
-  const [scenarioInfo, setScenarioInfo] = useState<ScenarioInfo>({
+  const [scenarioInfo, setScenarioInfo] = useState<Scenario>({
     organization: "",
     coreTech: "",
     time: "",
@@ -69,7 +70,7 @@ function ProductQuery({
         }}
         placeholder="ex) Ai tech company"
         docName={"Scenario:Organization"}
-        value={undefined}
+        value={""}
       ></CollaborativeEditor>
       <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
         CoreTech
@@ -82,7 +83,7 @@ function ProductQuery({
         }}
         placeholder="ex) Facial Recognition"
         docName={"Scenario:CoreTech"}
-        value={undefined}
+        value={""}
       ></CollaborativeEditor>
       <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
         Time
@@ -95,7 +96,7 @@ function ProductQuery({
         }}
         placeholder="ex) Facial Recognition"
         docName={"Scenario:time"}
-        value={undefined}
+        value={""}
       ></CollaborativeEditor>
       <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
         Place
@@ -108,7 +109,7 @@ function ProductQuery({
         }}
         placeholder="ex) Facial Recognition"
         docName={"Scenario:place"}
-        value={undefined}
+        value={""}
       ></CollaborativeEditor>
       <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
         Occasion
@@ -121,7 +122,7 @@ function ProductQuery({
         }}
         placeholder="ex) Facial Recognition"
         docName={"Scenario:occasion"}
-        value={undefined}
+        value={""}
       ></CollaborativeEditor>
       <br></br>
       <div className="flex justify-center">
@@ -164,7 +165,7 @@ function ProductDisplay({
     newProductList[index] = changeInfo;
     setProductList(newProductList);
   }
-  const row = [];
+  const row : JSX.Element[] = [];
   for (let index in productList) {
     const indexAsNumber = parseInt(index);
     const newPanel = (
@@ -214,7 +215,7 @@ function ProductPanel({
         }}
         placeholder="ex) Facial Recognition"
         docName={"Scenario:occasion"}
-        value={}
+        value={product.title}
       ></CollaborativeEditor>
       <br></br>
       <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -236,4 +237,4 @@ function ProductPanel({
     </div>
   );
 }
-export { ProductManager, ProductPanel, Product };
+export { ProductManager, ProductPanel, Product ,Scenario };

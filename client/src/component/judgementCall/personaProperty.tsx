@@ -41,9 +41,9 @@ function PropertyQuery({
       ></PropertyListPanel>
       <RequestButton
         onRequest={(retval: { data: Array<string> }) => {
-          const newPropList = [];
-          for(let index in retval.data){
-            newPropList.push({name : retval.data[index],value : ""})
+          const newPropList: Property[] = [];
+          for (let index in retval.data) {
+            newPropList.push({ name: retval.data[index], value: "" });
           }
           handleChange(newPropList);
         }}
@@ -61,12 +61,12 @@ function PropertyListPanel({
   disabled,
 }: {
   propertyList: Array<Property>;
-  setPropertyList: (array: Array<Property>) => void,
-  disabled : boolean
+  setPropertyList: (array: Array<Property>) => void;
+  disabled: boolean;
 }) {
-  const row = [];
+  const row: JSX.Element[] = [];
   for (let index in propertyList) {
-    const indexAsNumber = parseInt(index)
+    const indexAsNumber = parseInt(index);
     const content = (
       <input
         type="text"
@@ -95,25 +95,28 @@ function PropertyListPanel({
     );
     row.push(propertyText);
   }
-  const buttonForAddProperty = disabled ? undefined : (
-    <button
-      key={propertyList.length ?? 0}
-      className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
-      onClick={addEmptyProperty}
-    >
-      Add property
-    </button>
-  );
-  row.push(buttonForAddProperty);
+  if (!disabled) {
+    const buttonForAddProperty = (
+      <button
+        key={propertyList.length ?? 0}
+        className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+        onClick={addEmptyProperty}
+      >
+        Add property
+      </button>
+    );
+
+    row.push(buttonForAddProperty);
+  }
   function addEmptyProperty() {
     const newList = [...propertyList];
     newList.push({
-      name : "",
-      value : undefined
+      name: "",
+      value: undefined,
     });
     setPropertyList(newList);
   }
-  function handlePropertyNameChange(index: number, changeObject : string) {
+  function handlePropertyNameChange(index: number, changeObject: string) {
     const newArray = [...propertyList];
     newArray[index].name = changeObject;
     setPropertyList(newArray);

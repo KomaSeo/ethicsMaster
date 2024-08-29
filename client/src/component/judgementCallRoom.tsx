@@ -13,7 +13,7 @@ import { useLoaderData } from "react-router-dom";
 import { Property } from "./judgementCall/personaProperty";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setRoomId, setUserId } from "../features/judgementCallSlice";
+import { setRoomId, setUserId } from "../features/RoomSlice";
 function Card({ cardHeaderContent, children } : {cardHeaderContent : string, children : React.ReactNode}) {
   return (
     <div className="max-w-screen-xl p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -173,7 +173,7 @@ function JudgementCall() {
   );
 
   function generateSideBarContent(pipelineLabel : Array<string>) {
-    const sideContentList = [];
+    const sideContentList : JSX.Element[] = [];
     const sideContentLabel = pipelineLabel;
     if (selectedProduct) {
       sideContentList.push(
