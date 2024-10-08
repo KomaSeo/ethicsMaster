@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { RequestButton } from "../UI/serverRequestButton";
 import { SelectOnList } from "../UI/selectOnList";
 import CollaborativeEditor from "../UI/collaborativeEditor";
-import * as Y from 'yjs'
 
 interface Product {
   title: string;
@@ -165,7 +164,7 @@ function ProductDisplay({
     newProductList[index] = changeInfo;
     setProductList(newProductList);
   }
-  const row : JSX.Element[] = [];
+  const row : React.JSX.Element[] = [];
   for (let index in productList) {
     const indexAsNumber = parseInt(index);
     const newPanel = (

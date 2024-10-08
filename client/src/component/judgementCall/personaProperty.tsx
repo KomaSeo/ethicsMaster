@@ -64,7 +64,7 @@ function PropertyListPanel({
   setPropertyList: (array: Array<Property>) => void;
   disabled: boolean;
 }) {
-  const row: JSX.Element[] = [];
+  const row: React.JSX.Element[] = [];
   for (let index in propertyList) {
     const indexAsNumber = parseInt(index);
     const content = (

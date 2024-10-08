@@ -45,7 +45,7 @@ function PersonaManager({
     newList.push(newPersona);
     setPersonaList(newList);
   }
-  const panelList : JSX.Element[] = [];
+  const panelList : React.JSX.Element[] = [];
   for (let i in personaList) {
     const indexAsNumber = parseInt(i)
     const newPanel = (
@@ -99,7 +99,7 @@ function PersonaPanel({ initPersona, onChange, disabled} : {initPersona : Person
     setPropertyList(newPropertyList);
     onChange(newPropertyList);
   }
-  const propertyRow : JSX.Element[] = [];
+  const propertyRow : React.JSX.Element[] = [];
   for (let i in persona) {
     const indexAsNumber = parseInt(i)
     const propertyPanel = (
