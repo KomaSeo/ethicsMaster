@@ -1,0 +1,7 @@
+1. Online documentation synchronization cause accurate synchornization won't be needed.
+2. product
+3. property
+4. stakeholder(persona)
+5. chatting system between student
+6. 
+HOST=localhost PORT=1234 npx y-websocket

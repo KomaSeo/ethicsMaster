@@ -1,4 +1,5 @@
 import openai from "./OpenAIInstance.js";
+import {extractStringFromDelimiter} from './util.js'
 
 const distanceToTech = [
   "Direct Stakeholders : those who interact directly with the technology and can include end users, designers, engineers, hackers, and administrators.",
@@ -7,27 +8,36 @@ const distanceToTech = [
 ];
 
 
-async function generateStakeHolder(
+async function generatePersona(
   product,
-  criteria,
+  propertyList,
+  distanceType,
   previousPersonaList = null
 ) {
+  propertyList.push("stakeholder_group")
   let systemMessage = `You are a product manager who involved in discussion about ethical concern. `;
   systemMessage += `For a given product, You should suggest stakeholders group who are related to product.`;
   systemMessage += `You should suggest only one stakeholder group. `;
   systemMessage += `You should generate one representative person and his(or her) information.`;
-  systemMessage += `In personal information, you should contain ${criteria}.`;
+  systemMessage += `In personal information, you must contain ${propertyList}. Never contain any other information.\n`;
+  systemMessage += `Definition of direct, indirect, excluded stakeholders are as follows. ${distanceToTech[0]}, ${distanceToTech[1]}, ${distanceToTech[2]}.`;
+  systemMessage += `You should suggest ${distanceType} type of stakeholder.`
+  systemMessage += `You should reply by containing name of personal information by square bracket, and containing personal information content by curly bracket.`
+  systemMessage += `For example, for prduct which can be used in airport you can suggest like : "[Name] {Bruce Wayne} [Age] {41} ... [stakeholder_group] {passenger#direct stakeholder}\n"`
+  systemMessage += `When You write stakeholder_group, don't use ambiguous word like "end user".`
+
   if(previousPersonaList !=null){
     systemMessage += "After product information, other stakeholder list will be given.";
     systemMessage += "You must suggest a stakeholder who has a very different background from people on the list."
+    systemMessage += `other stakeholder list may contains personal information which is not listed above.`
+    systemMessage += `Don't contain it to your suggestion.`
   }
-  systemMessage += `You should suggest direct type of stakeholder.`
-  systemMessage += `Definition of direct, indirect, excluded stakeholders are as follows. ${distanceToTech[0]}, ${distanceToTech[1]}, ${distanceToTech[2]}.`;
 
   const message = []
+
   message.push({ role: "system", content: systemMessage })
   message.push({    role: "user",
-    content:`Given Product : ${product}`,
+    content:`${product}\n`,
   })
   if(previousPersonaList != null){
     for(let persona in previousPersonaList){
@@ -39,7 +49,22 @@ async function generateStakeHolder(
     messages: message,
     model: "gpt-4o-mini",
   });
-  return completion.choices[0].message.content;
+  console.log(product)
+  const queryString = completion.choices[0].message.content;
+  const generatedPropertyList = extractStringFromDelimiter(queryString,'[',']');
+  const generatedContentList = extractStringFromDelimiter(queryString,"{","}");
+  if(generatedPropertyList.length != generatedContentList.length){
+    throw Error(`Length of generated Propertylist and generated Contentlist is different. The Query string is "${queryString}".`)
+  }
+  const personaInfoList = []
+  for(let i=0; i < generatedPropertyList.length; i++){
+    const singlePersonaInfo = {
+      propertyName : generatedPropertyList[i],
+      propertyContent : generatedContentList[i]
+    } 
+    personaInfoList.push(singlePersonaInfo);
+  }
+  return personaInfoList;
 }
 
-export default generateStakeHolder;
+export default generatePersona;

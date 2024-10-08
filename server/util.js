@@ -59,4 +59,18 @@ function saveImageFromUrl(imageUrl, saveFileURL) {
     });
 }
 
-export {saveImageFromUrl, extractStringFromDelimiter}
+function convertProductToStirng(product){
+  let productString = `Product title : ${product.title}\n`
+  productString = productString + `Product explanation : ${product.explanation}.`
+  return productString
+}
+function convertPersonaToString(persona){
+  let personaString = "------Personal Information------\n"
+  for(let propertyIndex in persona){
+    personaString = personaString + `${persona[propertyIndex].propertyName} : ${persona[propertyIndex].propertyContent}\n`
+  }
+  personaString = personaString +  "-----------------------------"
+  return personaString
+}
+
+export {saveImageFromUrl, extractStringFromDelimiter, convertProductToStirng, convertPersonaToString}
