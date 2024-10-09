@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "redux-yjs-bindings": "^0.3.1"
+  }
+}
